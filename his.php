@@ -2,7 +2,7 @@
 session_start();
 include('public/connectpdo.php');
 $user_id = $_SESSION['mem_id'];
-$sql2 = "SELECT mem_address FROM member WHERE mem_id = :user_id ";
+$sql2 = "SELECT mem_address FROM member WHERE mem_id = :user_id";
 $stmt2 = $db->prepare($sql2);
 $stmt2->bindparam(':user_id', $user_id);
 $stmt2->execute();
@@ -66,7 +66,7 @@ $row2 = $stmt2->fetch(PDO::FETCH_ASSOC);
                             <tbody>
                                 <?php
 
-                                $sql = "SELECT * FROM invoice WHERE user_id = :user_id AND status = '1' OR status = '2' ORDER BY id ASC";
+                                $sql = "SELECT * FROM invoice WHERE user_id = '".$user_id."' AND status != '0' ORDER BY id ASC";
                                 $stmt = $db->prepare($sql);
                                 $stmt->bindparam(':user_id', $user_id);
                                 $stmt->execute();

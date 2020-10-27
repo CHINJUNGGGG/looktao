@@ -60,6 +60,7 @@ $test = $_GET['id'];
                                 $pro_quantity = $row1['pro_quantity'];
                                 $pro_price = $row1['pro_price'];
                                 $pro_img = $row1['pro_img'];
+                                $pro_detail = $row1['pro_detail'];
 
                             ?>
                             <div class="product-pic-zoom">
@@ -85,6 +86,9 @@ $test = $_GET['id'];
                                 </div>
                                 <div class="pd-desc">
                                     <h4>฿<?= $pro_price ?></h4>
+                                </div>
+                                <div class="pd-desc">
+                                    <h4 style="color: #000 !important; font-size: 14px !important;"><?= $pro_detail ?></h4>
                                 </div>
                                 <form id="cart" method="POST" enctype="multipart/form-data">
                                     <div class="quantity" style="margin-top: 190px;">

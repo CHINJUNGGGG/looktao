@@ -14,10 +14,37 @@ if(isset($_POST["do"]) && $_POST["do"] != "" ){
         case 'invoice':
 
             $cart_id = $_POST['cart_id'];
+            $product_id = $_POST['product_id'];
+            $amount = $_POST['amount'];
             $price = $_POST['price'];
-            // print_r($_POST);
-            // die();
 
+            for ($i=0; $i<count($cart_id);$i++) {  
+                $sql1= "select * from cart where id = '".$cart_id[$i]."'";
+                $stmt1=$db->prepare($sql1);
+                $stmt1->execute();
+                while($row1=$stmt1->fetch(PDO::FETCH_ASSOC)){
+                    $am = $row1['amount'];
+                    $p_id = $row1['product_id'];
+                    $c_id = $row1['cart_id'];
+
+                $sql2= "select pro_quantity from product where pro_id = '".$p_id[$test]."'";
+                $stmt2=$db->prepare($sql2);
+                $stmt2->execute();
+                $row2=$stmt2->fetch(PDO::FETCH_ASSOC);
+                    $pro_quantity = $row2['pro_quantity'];
+                    $sum = $pro_quantity - $am;
+
+                $sql_success1 = "UPDATE product SET pro_quantity = '".$sum."' WHERE pro_id = '".$p_id."'";
+                $result_success1 = mysqli_query($conn, $sql_success1) or die(mysqli_error());
+
+                
+                $sql_success2 = "UPDATE cart SET status = '1' WHERE id = '".$c_id."'";
+                $result_success2 = mysqli_query($conn, $sql_success2) or die(mysqli_error());
+
+
+                }
+            }  
+            
             $json = array(
                 'cart_id' => $cart_id
             );
@@ -107,7 +134,7 @@ if(isset($_POST["do"]) && $_POST["do"] != "" ){
             $id = $_POST['id'];
             // print_r($_POST);
             // die();
-            $sql = "SELECT * FROM invoice WHERE id = :id";
+            $sql = "SELECT *,(price + 150) as price FROM invoice WHERE id = :id";
             $stmt=$db->prepare($sql);
             $stmt->bindparam(':id',$id);
             $stmt->execute();

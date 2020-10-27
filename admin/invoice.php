@@ -23,16 +23,6 @@
                                     href="#custom-tabs-four-home" role="tab" aria-controls="custom-tabs-four-home"
                                     aria-selected="true">รายการสั่งซื้อทั้งหมด</a>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link" id="custom-tabs-four-profile-tab" data-toggle="pill"
-                                    href="#custom-tabs-four-profile" role="tab" aria-controls="custom-tabs-four-profile"
-                                    aria-selected="false">โอนผ่านธนาคาร</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" id="custom-tabs-four-cash-tab" data-toggle="pill"
-                                    href="#custom-tabs-four-cash" role="tab" aria-controls="custom-tabs-four-cash"
-                                    aria-selected="false">เก็บเงินปลายทาง</a>
-                            </li>
                         </ul>
                     </div>
                     <div class="card-body">
@@ -45,7 +35,7 @@
                                             <th>หมายเลขการสั่งซื้อ</th>
                                             <th>สลิป</th>
                                             <th>ประเภท</th>
-                                            <th>ขนส่งที่จัดส่ง</th>
+                                            <th>วันเวลาทำรายการ</th>
                                             <th>ราคารวมทั้งหมด</th>
                                             <th>หมายเลขพัสดุ</th>
                                             <th>ชื่อผู้รับ</th>
@@ -65,7 +55,8 @@
                                             $type = $row['type']; 
                                             $slip = $row['slip']; 
                                             $price = $row['price']; 
-                                            $user_id = $row['user_id'];   
+                                            $user_id = $row['user_id']; 
+                                            $create_at = $row['create_at'];   
                                             $status = $row['status']; 
                                             $shipping_id = $row['shipping_id']; 
                                             $tracking_number = $row['tracking_number'];   
@@ -92,9 +83,9 @@
                                         <tr>
                                             <td><?=$invoice?></td>
                                             <td><a href="#" id="pop"><img src="slip/<?=$slip?>" id="imageresource" style="width:100px; height:100px;"></a></td>
-                                            <td><?php if($type == '1'){ echo '<font style="color: Green">โอนเงิน</font>';}else{echo '<font style="color: Green">เก็บเงินปลายทาง</font>';}?>
+                                            <td><?php if($type == '1'){ echo '<font style="color: Green">โอนเงิน</font>';}else{echo '<font style="color: Green">-</font>';}?>
                                             </td>
-                                            <td><?=$shipping_name?></td>
+                                            <td><?=$create_at?></td>
                                             <td><?=$price?> ฿</td>
                                             <td>
                                                 <?php if($tracking_number == NULL){ ?>
@@ -179,7 +170,7 @@
                                         <tr>
                                             <td><?=$invoice?></td>
                                             <td><img src="slip/<?=$slip?>" style="width:100px; height:100px;"></td>
-                                            <td><?php if($type == '1'){ echo '<font style="color: Green">โอนเงิน</font>';}else{echo '<font style="color: Green">เก็บเงินปลายทาง</font>';}?>
+                                            <td><?php if($type == '1'){ echo '<font style="color: Green">โอนเงิน</font>';}else{echo '<font style="color: Green">-</font>';}?>
                                             </td>
                                             <td><?=$shipping_name?></td>
                                             <td><?=$price?></td>
@@ -262,7 +253,7 @@
                                     ?>
                                         <tr>
                                             <td><?=$invoice?></td>
-                                            <td><?php if($type == '1'){ echo '<font style="color: Green">โอนเงิน</font>';}else{echo '<font style="color: Green">เก็บเงินปลายทาง</font>';}?>
+                                            <td><?php if($type == '1'){ echo '<font style="color: Green">โอนเงิน</font>';}else{echo '<font style="color: Green">-</font>';}?>
                                             </td>
                                             <td><?=$shipping_name?></td>
                                             <td><?=$price?></td>

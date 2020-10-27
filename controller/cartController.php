@@ -22,7 +22,7 @@ if(isset($_POST["do"]) && $_POST["do"] != "" ){
             $row = $result_check->fetch_assoc();
             $pro_quantity = $row['pro_quantity'];
             $pro_price = $row['pro_price'];
-            $stock = $pro_quantity - $amount;
+            // $stock = $pro_quantity - $amount;
             $sum = $amount * $pro_price;
 
             if($pro_quantity <= 0){
@@ -34,8 +34,8 @@ if(isset($_POST["do"]) && $_POST["do"] != "" ){
                 $sql = "INSERT INTO `cart`(`product_id`, `amount`, `price`, `user_id`, `date`) VALUES ('$product_id', '$amount', '$sum', '$user_id', '$date')";
                 $result = mysqli_query($conn, $sql) or die(mysqli_error());
 
-                $sql_update = "UPDATE product SET pro_quantity = '".$stock."' WHERE pro_id = '".$product_id."'";
-                $result = mysqli_query($conn, $sql_update) or die(mysqli_error());
+                // $sql_update = "UPDATE product SET pro_quantity = '".$stock."' WHERE pro_id = '".$product_id."'";
+                // $result = mysqli_query($conn, $sql_update) or die(mysqli_error());
 
                 echo "Success";
 

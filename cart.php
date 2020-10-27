@@ -9,13 +9,6 @@ include('public/connectpdo.php');
 <head>
     <?php require_once __DIR__ . '/resource/head.php'; ?>
 </head>
-<style>
-    .form-control:disabled,
-    .form-control[readonly] {
-        background-color: #fff;
-        opacity: 1;
-    }
-</style>
 
 <body>
     <div id="preloder">
@@ -92,14 +85,13 @@ include('public/connectpdo.php');
                                         <td class="p-price first-row">฿<?=$pro_price?></td>
                                         <td class="qua-col first-row">
                                             <div class="quantity">
-                                                <div class="pro-qty">
-                                                    <input type="text" value="<?=$amount?>" style="border: none !important;" disabled>
-                                                </div>
+                                                <input type="number" name="amount[]" value="<?=$amount?>" max="<?=$pro_quantity?>" style="width: 80px;" class="form-control">                                      
                                             </div>
                                         </td>
                                         <td class="total-price first-row">฿<?=$price?></td>
                                         <td class="close-td first-row"><a href="controller/delete.product.php?id=<?=$id?>" style="color: #000;" onclick="return confirm('Are you sure ?')"><i class="ti-close"></i></a></td>
                                         <input type="hidden" name="cart_id[]" value="<?=$id?>">
+                                        <input type="hidden" name="product_id[]" value="<?=$pro_id2?>">
                                     </tr>
                                 <?php } ?>
                                 </tbody>
@@ -115,6 +107,8 @@ include('public/connectpdo.php');
                             $id = $row2['id'];
                             $price2 = $row2['sum'];
                             $amount = $row2['amount'];
+
+                            $price2 = number_format($price2);
                         
                         ?>
                         <div class="row">
