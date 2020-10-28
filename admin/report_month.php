@@ -7,6 +7,7 @@ $mpdf = new \Mpdf\Mpdf([
 ]);
 
   include "path/connectpdo.php";
+  include "path/connect.php";
 
 $months = $_POST['month'];
 
@@ -26,48 +27,72 @@ $html = "<h3 style='text-align: center;'>รายงานยอดขายป
 $html .= "<br><br><br><table>
                     <tr>
                           <th>ลำดับ</th>
-                          <th>รูปภาพ</th>
                           <th>ชื่อสินค้า</th>
                           <th>จำนวน</th>
                           <th>ราคา</th>
                     </tr>";
-        $i = 0;
-   
-        $sql = "SELECT *,SUM(price) as sum FROM `cart` WHERE sUBSTRING(date, 1, 7) LIKE '%2020-10%'";
-        $stmt = $db->prepare($sql);
-        $stmt->execute();
-        while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
-            $product_id = $row['product_id'];
-            $amount = $row['amount'];
-            $price = $row['price'];
-            $sum = $row['sum'];
 
-            $sql1 = "SELECT *,SUM(pro_quantity) as sum1 FROM product WHERE pro_type = :product_id";
-            $stmt1 = $db->prepare($sql1);
-            $stmt1->bindparam(':product_id', $product_id);
-            $stmt1->execute();
-            $row1 = $stmt1->fetch(PDO::FETCH_ASSOC);
-                $pro_id = $row1['pro_id'];
-                $pro_name = $row1['pro_name'];
-                $pro_quantity = $row1['pro_quantity'];
-                $pro_price = $row1['pro_price'];
-                $pro_img = $row1['pro_img'];
-                $sum1 = $row1['sum1'];
-            $i++;
+            $someArray = [];
+            $i = 0;
+            $query = "SELECT list,SUM(price) as test FROM invoice WHERE SUBSTRING(create_at, 1, 7) LIKE '".$sub."'";
+            $result = $conn->query($query);
+            $row5 = mysqli_fetch_array($result, MYSQLI_ASSOC);
+            $test = $row5['test'];
+
+            $user = json_decode($row5['list'], true);
+
+            foreach($user['cart_id'] as $key => $cart_id){
+                $someArray[$i] = $cart_id;
+                $i = $i+1;
+            }
+            $yy = 0;
+  
+                $sql1 = "SELECT *,SUM(amount) as yu FROM cart WHERE SUBSTRING(date, 1, 7) LIKE '".$sub."' GROUP BY product_id";
+                $stmt1 = $db->prepare($sql1);
+                $stmt1->execute();
+                while ($row1 = $stmt1->fetch(PDO::FETCH_ASSOC)) {
+                    $id = $row1['id'];
+                    $yu = $row1['yu'];
+                    $product_id = $row1['product_id'];
+                    $sum  = $row1['sum'];
+                    $amount  = $row1['amount'];
+
+                    $sql4= "SELECT *,SUM(amount) as rr FROM cart WHERE SUBSTRING(date, 1, 7) LIKE '".$sub."'";
+                    $stmt4 = $db->prepare($sql4);
+                    $stmt4->execute();
+                    $row4 = $stmt4->fetch(PDO::FETCH_ASSOC);
+                        $rr = $row4['rr'];
+                
+                $sql = "SELECT * FROM product WHERE pro_id = '".$product_id."'";
+                $stmt = $db->prepare($sql);
+                $stmt->execute();
+                $row = $stmt->fetch(PDO::FETCH_ASSOC);
+                    $pro_id = $row['pro_id'];
+                    $pro_price  = $row['pro_price'];
+                    $pro_name = $row['pro_name']; 
+                    $pro_img = $row['pro_img']; 
+
+                    $value = $yu * $pro_price;
+   
+                
+            $yy++;
 
     $html .= "  <tr>
-                    <td align='center'>".$i."</td>
-                    <td align='center'><img src='img/".$pro_img."' style='width: 100px; height: 100px'></td>                     
+                    <td align='center'>".$yy."</td>                  
                     <td align='center'>".$pro_name."</td>
-                    <td align='center'>".$amount."</td>
-                    <td align='center'>".$price."</td>
+                    <td align='center'>".$yu."</td>
+                    <td align='center'>".$value."</td>
                 </tr>";
 }
 $html .= "
           <tr>
-              <td colspan='4' style='text-align: right;'><b>ยอดขายทั้งหมด :</b></td>
-              <td style='text-align: right;'><b>".$sum." บาท</b></td>
-          </tr>";
+              <td colspan='3' style='text-align: right;'><b>ยอดขายทั้งหมด :</b></td>
+              <td style='text-align: right;'><b>".$test." บาท</b></td>
+          </tr>
+          <tr>
+          <td colspan='3' style='text-align: right;'><b>จำนวนที่ขายได้ทั้งหมด :</b></td>
+          <td style='text-align: right;'><b>".$rr." ชิ้น</b></td>
+      </tr>";
         
                 
         
